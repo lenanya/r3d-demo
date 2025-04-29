@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.embeddedhtml": "html",
+    "*.S": "assembly",
+    "__tree": "c"
+  }
+}
