@@ -1,10 +1,13 @@
 #include "r3d.h"
 #include "car.h"
-
+#include <stdlib.h>
+#include "raymath.h"
 
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "r3d demo"
+
+#define CUBE_SPIN_SPEED 45
 
 int main(void) {
 
@@ -17,8 +20,10 @@ int main(void) {
 
   plane = LoadModelFromMesh(GenMeshPlane(1000, 1000, 1, 1));
   plane.materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1;
-  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 0;
+  plane.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 1;
   plane.materials[0].maps[MATERIAL_MAP_METALNESS].value = 1;
+
+  R3D_SetMaterialAlbedo(&plane.materials[0], NULL, (Color){0x10, 0x10, 0x10, 0xFF});
 
   Model cube = {0};
 
@@ -52,13 +57,23 @@ int main(void) {
       R3D_EnableShadow(light, 4096);
   }
 
+  float cube_angle = 0;
+
   while(!WindowShouldClose()) {
-    UpdateCamera(&camera, CAMERA_ORBITAL);
+    cube_angle = fmodf(cube_angle + CUBE_SPIN_SPEED * GetFrameTime(), 360);
+
     BeginDrawing();
+    ClearBackground(GRAY);
     R3D_Begin(camera);
 
-    R3D_DrawModel(plane, (Vector3) {0, -0.5f, 0}, 1.0f);
-    R3D_DrawModel(cube, (Vector3) {0, 0.5, 0}, 1.0f);
+    R3D_DrawModel(plane, (Vector3) {0, -1, 0}, 1.0f);
+    R3D_DrawModelEx(
+      cube, 
+      (Vector3) {0, 0.5, 0}, 
+      (Vector3) {1, 1, 1}, 
+      cube_angle, 
+      (Vector3) {1, 1, 1}
+    );
 
     R3D_End();
     EndDrawing();
