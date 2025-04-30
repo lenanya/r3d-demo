@@ -49,12 +49,12 @@ int main(void) {
   wall.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 1;
   wall.materials[0].maps[MATERIAL_MAP_METALNESS].value = 0;
 
-  R3D_SetMaterialAlbedo(&wall.materials[0], NULL, WHITE);
+  R3D_SetMaterialAlbedo(&wall.materials[0], &texture, WHITE);
 
   Model ceiling = LoadModelFromMesh(GenMeshCube(10, 1, 10));
   ceiling.materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1;
 
-  R3D_SetMaterialAlbedo(&ceiling.materials[0], NULL, GRAY);
+  R3D_SetMaterialAlbedo(&ceiling.materials[0], &texture, GRAY);
 
   Model lamp = LoadModelFromMesh(GenMeshSphere(0.3, 64, 64));
   lamp.materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1;
